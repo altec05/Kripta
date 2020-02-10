@@ -127,38 +127,55 @@ namespace Ciphers
             }
             else
             {
+                string al = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюяABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
                 for (int i = 0; i < s.Length; i++)
                 {
-                    for (int j = 0; j < alRu.Length; j++)
+                    bool f1 = false;
+                    for (int k = 0; k < al.Length; k++)
                     {
-                        if (s[i] == alRu[j])
+                        if (s[i] == al[k])
                         {
-                            if (j < 33)
+                            f1 = true;
+                        }
+                    }
+                    if (f1 == true)
+                    {
+                        for (int j = 0; j < alRu.Length; j++)
+                        {
+                            if (s[i] == alRu[j])
                             {
-                                code.Append(alRu[32 - j - 1 + 1]);
+                                if (j < 33)
+                                {
+                                    code.Append(alRu[32 - j - 1 + 1]);
+                                }
+                                else
+                                {
+                                    code.Append(alRu[65 - j + 32 + 1]);
+                                }
+
                             }
-                            else
+                        }
+
+                        for (int j = 0; j < alEn.Length; j++)
+                        {
+                            if (s[i] == alEn[j])
                             {
-                                code.Append(alRu[65 - j + 32 + 1]);
+                                if (j < 26)
+                                {
+                                    code.Append(alEn[25 - j - 1 + 1]);
+                                }
+                                else
+                                {
+                                    code.Append(alEn[51 - j + 25 + 1]);
+                                }
+
                             }
 
                         }
                     }
-                    for (int j = 0; j < alEn.Length; j++)
-                    {
-                        if (s[i] == alEn[j])
-                        {
-                            if (j < 26)
-                            {
-                                code.Append(alEn[25 - j - 1 + 1]);
-                            }
-                            else
-                            {
-                                code.Append(alEn[51 - j + 25 + 1]);
-                            }
+                    else code.Append(s[i]);
 
-                        }
-                    }
                 }
             }
                 return code.ToString();
@@ -176,10 +193,10 @@ namespace Ciphers
             }
             else
             {
-                //step = Convert.ToInt32(sd);
-                //for (int i = 0; i < s.Length; i++)
-                //    for (int j = 0; j < al.Length; j++)
-                //        if (s[i] == al[j]) code.Append(al[(j + step) % al.Length]);
+                step = Convert.ToInt32(sd);
+                for (int i = 0; i < s.Length; i++)
+                    for (int j = 0; j < alRu.Length; j++)
+                        if (s[i] == alRu[j]) code.Append(alRu[(j + step) % alRu.Length]);
             }
             return code.ToString();
         }
