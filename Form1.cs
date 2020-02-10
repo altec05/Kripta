@@ -193,10 +193,37 @@ namespace Ciphers
             }
             else
             {
+                string al = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюяABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
                 step = Convert.ToInt32(sd);
                 for (int i = 0; i < s.Length; i++)
-                    for (int j = 0; j < alRu.Length; j++)
-                        if (s[i] == alRu[j]) code.Append(alRu[(j + step) % alRu.Length]);
+                {
+                    bool f1 = false;
+                    for (int k = 0; k < al.Length; k++)
+                    {
+                        if (s[i] == al[k])
+                        {
+                            f1 = true;
+                        }
+                    }
+                    if (f1 == true)
+                    {
+                        for (int j = 0; j < alRu.Length; j++)
+                        {
+                            if (s[i] == alRu[j])
+                            {
+                                code.Append(alRu[(j + step) % alRu.Length]);
+                            }
+                        }
+                        for (int j = 0; j < alEn.Length; j++)
+                        {
+                            if (s[i] == alEn[j])
+                            {
+                                code.Append(alEn[(j + step) % alEn.Length]);
+                            }
+                        }
+                    }
+                    else code.Append(s[i]);     
+                }
             }
             return code.ToString();
         }
@@ -213,10 +240,37 @@ namespace Ciphers
             }
             else
             {
-                //step = Convert.ToInt32(sd);
-                //for (int i = 0; i < s.Length; i++)
-                //    for (int j = 0; j < al.Length; j++)
-                //        if (s[i] == al[j]) code.Append(al[(j - step + al.Length) % al.Length]);
+                string al = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюяABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+                step = Convert.ToInt32(sd);
+                for (int i = 0; i < s.Length; i++)
+                {
+                    bool f1 = false;
+                    for (int k = 0; k < al.Length; k++)
+                    {
+                        if (s[i] == al[k])
+                        {
+                            f1 = true;
+                        }
+                    }
+                    if (f1 == true)
+                    {
+                        for (int j = 0; j < alRu.Length; j++)
+                        {
+                            if (s[i] == alRu[j])
+                            {
+                                code.Append(alRu[(j - step + alRu.Length) % alRu.Length]);
+                            }
+                        }
+                        for (int j = 0; j < alEn.Length; j++)
+                        {
+                            if (s[i] == alEn[j])
+                            {
+                                code.Append(alEn[(j - step + alEn.Length) % alEn.Length]);
+                            }
+                        }
+                    }
+                    else code.Append(s[i]);
+                }
             }
             return code.ToString();
         }
