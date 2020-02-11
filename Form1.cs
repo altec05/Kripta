@@ -22,6 +22,7 @@ namespace Ciphers
 
         }
 
+        //Алфавиты
         string alRu = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя";
         string alEn = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         string al = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюяABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
@@ -31,10 +32,10 @@ namespace Ciphers
             switch (comboBox1.Text)
             {
                 case "Шифр Атбаш":
-                    textBox2.Text = Atbash1(textBox1.Text);
+                    textBox2.Text = Atbash1(textBox1.Text); //Зашифровать Атбаш
                     break;
                 case "Шифр Цезаря":
-                    textBox2.Text = Orientation(textBox1.Text); //Введённое в tb1 попадёт потом в tb2
+                    textBox2.Text = Orientation(textBox1.Text); //Зашифровать Цезарь
                     break;
             }
 
@@ -45,21 +46,21 @@ namespace Ciphers
             switch (comboBox1.Text)
             {
                 case "Шифр Атбаш":
-                    textBox2.Text = Atbash2(textBox1.Text);
+                    textBox2.Text = Atbash2(textBox1.Text); //Расшифровать Атбаш
                     break;
 
                 case "Шифр Цезаря":
-                    textBox2.Text = Orientation2(textBox1.Text); //Введённое в tb1 попадёт потом в tb2
+                    textBox2.Text = Orientation2(textBox1.Text); //Расшифровать Цезарь
                     break;
             }
 
         }
 
-        public string Atbash1(string inp)
+        public string Atbash1(string inp) //Зашифровать Атбаш
         {
             StringBuilder code = new StringBuilder();
             string s = textBox1.Text; // s - связана с вводимым текстом
-            if (textBox1.Text == "")
+            if (textBox1.Text == "") //Проверка на пустое поле
             {
                 MessageBox.Show("Введите текст!", "Пустое поле");
             }
@@ -67,7 +68,7 @@ namespace Ciphers
             {
                 for (int i = 0; i < s.Length; i++)
                 {
-                    bool f1 = false;
+                    bool f1 = false; //Проверка на букву
                     for (int k = 0; k < al.Length; k++)
                     {
                         if (s[i] == al[k])
@@ -75,7 +76,7 @@ namespace Ciphers
                             f1 = true;
                         }
                     }
-                    if (f1 == true)
+                    if (f1 == true) //Если буква, то прогоняем проверку по алфавитам
                     {
                         for (int j = 0; j < alRu.Length; j++)
                         {
@@ -83,11 +84,11 @@ namespace Ciphers
                             {
                                 if (j < 33)
                                 {
-                                    code.Append(alRu[32 - j - 1 + 1]);
+                                    code.Append(alRu[32 - j - 1 + 1]);//А
                                 }
                                 else
                                 {
-                                    code.Append(alRu[65 - j + 32 + 1]);
+                                    code.Append(alRu[65 - j + 32 + 1]);//а
                                 }
 
                             }
@@ -99,18 +100,18 @@ namespace Ciphers
                             {
                                 if (j < 26)
                                 {
-                                    code.Append(alEn[25 - j - 1 + 1]);
+                                    code.Append(alEn[25 - j - 1 + 1]);//А
                                 }
                                 else
                                 {
-                                    code.Append(alEn[51 - j + 25 + 1]);
+                                    code.Append(alEn[51 - j + 25 + 1]);//а
                                 }
 
                             }
 
                         }
                     }
-                    else code.Append(s[i]);
+                    else code.Append(s[i]); //Если символ (не буква), то просто остаётся
 
                 }
             }
@@ -121,7 +122,7 @@ namespace Ciphers
         {
             StringBuilder code = new StringBuilder();
             string s = textBox1.Text; // s - связана с вводимым текстом
-            if (textBox1.Text == "")
+            if (textBox1.Text == "") //Проверка на пустую строку
             {
                 MessageBox.Show("Введите текст!", "Ошибка ввода данных");
             }
@@ -130,16 +131,16 @@ namespace Ciphers
                 for (int i = 0; i < s.Length; i++)
                 {
                     bool f1 = false;
-                    for (int k = 0; k < al.Length; k++)
+                    for (int k = 0; k < al.Length; k++) //Проверка на букву
                     {
                         if (s[i] == al[k])
                         {
                             f1 = true;
                         }
                     }
-                    if (f1 == true)
+                    if (f1 == true) //Если буква, то обрабатываем
                     {
-                        for (int j = 0; j < alRu.Length; j++)
+                        for (int j = 0; j < alRu.Length; j++) //Проверка по русскому
                         {
                             if (s[i] == alRu[j])
                             {
@@ -155,7 +156,7 @@ namespace Ciphers
                             }
                         }
 
-                        for (int j = 0; j < alEn.Length; j++)
+                        for (int j = 0; j < alEn.Length; j++) //Проверка по английскому
                         {
                             if (s[i] == alEn[j])
                             {
@@ -179,34 +180,33 @@ namespace Ciphers
             return code.ToString();
         }
 
-        public string Orientation(string inp) //ori - для обозачения боока в котором происходит шифрование
+        public string Orientation(string inp) //Шифрование Цезарь
         {
             int step = -1;
-            StringBuilder code = new StringBuilder();
+            StringBuilder code = new StringBuilder(); //Класс для string
             string s = textBox1.Text; // s - связана с вводимым текстом
-            if (textBox1.Text == "")
+            if (textBox1.Text == "") //Проверка на пустое поле
             {
                 MessageBox.Show("Введите текст!", "Пустое поле");
             }
             string sd = textBox3.Text; //sd-количество шагов шифра (ключ шифрования)
-            if (textBox3.Text == "")
+            if (textBox3.Text == "") //Проверка на пустой ключ
             {
                 MessageBox.Show("Укажите требуемый шаг!", "Пустое поле");
             }
             else
             {
-                try
+                try //Отлов исключений
                 {
-                    step = Convert.ToInt32(sd);
+                    step = Convert.ToInt32(sd); //Перевод string в int
                 }
                 catch
                 {
-
-                    MessageBox.Show("В строке есть недопустимые символы!", "Ошибка ввода");
+                    MessageBox.Show("В строке есть недопустимые символы!", "Ошибка ввода"); //Случай, если будут лишние символы
                 }
                 finally
                 {
-                    if (step < 0)
+                    if (step < 0) //Если отрицательный шаг
                     {
                         for (int i = 0; i < 1; i++)
                         {
@@ -214,7 +214,7 @@ namespace Ciphers
                             break;
                         }
                     }
-                    else if (step > 32)
+                    else if (step > 32) //Ограничение по алфавиту
                     {
                         for (int i = 0; i < 1; i++)
                         {
@@ -227,7 +227,7 @@ namespace Ciphers
                     {
                         for (int i = 0; i < s.Length; i++)
                         {
-                            bool f1 = false;
+                            bool f1 = false; //Проверка на букву
                             for (int k = 0; k < al.Length; k++)
                             {
                                 if (s[i] == al[k])
@@ -235,7 +235,7 @@ namespace Ciphers
                                     f1 = true;
                                 }
                             }
-                            if (f1 == true)
+                            if (f1 == true) //Если буква, то проверки по русскому и английскому
                             {
                                 for (int j = 0; j < alRu.Length; j++)
                                 {
@@ -265,29 +265,28 @@ namespace Ciphers
             int step = -1;
             StringBuilder code = new StringBuilder();
             string s = textBox1.Text; // s - связана с вводимым текстом
-            if (textBox1.Text == "")
+            if (textBox1.Text == "") //Проверка на пустое поле
             {
                 MessageBox.Show("Введите текст!", "Пустое поле");
             }
             string sd = textBox3.Text; //sd-количество шагов шифра (ключ шифрования)
-            if (textBox3.Text == "")
+            if (textBox3.Text == "") //Проверка на пустой шаг 
             {
                 MessageBox.Show("Укажите требуемый шаг!", "Пустое поле");
             }
             else
             {
-                try
+                try // Отлов случая с лишними символами
                 {
                     step = Convert.ToInt32(sd);
                 }
                 catch
                 {
-
-                    MessageBox.Show("В строке есть недопустимые символы!", "Ошибка ввода");
+                    MessageBox.Show("В строке есть недопустимые символы!", "Ошибка ввода"); //Сообщение о лишних символах
                 }
                 finally
                 {
-                    if (step < 0)
+                    if (step < 0) //Проверка на отрицательный шаг
                     {
                         for (int i = 0; i < 1; i++)
                         {
@@ -295,7 +294,7 @@ namespace Ciphers
                             break;
                         }
                     }
-                    else if (step > 32)
+                    else if (step > 32) //Ограничение по размеру алфавита
                     {
                         for (int i = 0; i < 1; i++)
                         {
@@ -306,17 +305,17 @@ namespace Ciphers
                     }
                     else
                     {
-                        for (int i = 0; i < s.Length; i++)
+                        for (int i = 0; i < s.Length; i++) 
                         {
                             bool f1 = false;
-                            for (int k = 0; k < al.Length; k++)
+                            for (int k = 0; k < al.Length; k++) //Проверка на букву
                             {
                                 if (s[i] == al[k])
                                 {
                                     f1 = true;
                                 }
                             }
-                            if (f1 == true)
+                            if (f1 == true) //Если буква, то проверяем по алфавитам
                             {
                                 for (int j = 0; j < alRu.Length; j++)
                                 {
@@ -333,7 +332,7 @@ namespace Ciphers
                                     }
                                 }
                             }
-                            else code.Append(s[i]);
+                            else code.Append(s[i]); // Если символ, то просто выводим
                         }
                     }
                 }
@@ -354,9 +353,9 @@ namespace Ciphers
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             string selectedState = comboBox1.SelectedItem.ToString();
-            if (selectedState != "Шифр Цезаря")
+            if (selectedState != "Шифр Цезаря") //Видимость поля для ключа
             {
-                label4.Visible = false;
+                label4.Visible = false; 
                 textBox3.Visible = false;
             }
             else
