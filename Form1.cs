@@ -24,6 +24,7 @@ namespace Ciphers
 
         string alRu = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя";
         string alEn = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        string al = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюяABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -36,7 +37,7 @@ namespace Ciphers
                     textBox2.Text = Orientation(textBox1.Text); //Введённое в tb1 попадёт потом в tb2
                     break;
             }
-            
+
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -51,7 +52,7 @@ namespace Ciphers
                     textBox2.Text = Orientation2(textBox1.Text); //Введённое в tb1 попадёт потом в tb2
                     break;
             }
-            
+
         }
 
         public string Atbash1(string inp)
@@ -64,8 +65,6 @@ namespace Ciphers
             }
             else
             {
-                string al = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюяABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-                
                 for (int i = 0; i < s.Length; i++)
                 {
                     bool f1 = false;
@@ -76,7 +75,7 @@ namespace Ciphers
                             f1 = true;
                         }
                     }
-                    if(f1 == true)
+                    if (f1 == true)
                     {
                         for (int j = 0; j < alRu.Length; j++)
                         {
@@ -110,7 +109,8 @@ namespace Ciphers
                             }
 
                         }
-                    }else code.Append(s[i]);
+                    }
+                    else code.Append(s[i]);
 
                 }
             }
@@ -127,8 +127,6 @@ namespace Ciphers
             }
             else
             {
-                string al = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюяABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-
                 for (int i = 0; i < s.Length; i++)
                 {
                     bool f1 = false;
@@ -178,51 +176,85 @@ namespace Ciphers
 
                 }
             }
-                return code.ToString();
+            return code.ToString();
         }
 
         public string Orientation(string inp) //ori - для обозачения боока в котором происходит шифрование
         {
-            int step = 0;
+            int step = -1;
             StringBuilder code = new StringBuilder();
             string s = textBox1.Text; // s - связана с вводимым текстом
+            if (textBox1.Text == "")
+            {
+                MessageBox.Show("Введите текст!", "Пустое поле");
+            }
             string sd = textBox3.Text; //sd-количество шагов шифра (ключ шифрования)
             if (textBox3.Text == "")
             {
-                MessageBox.Show("Укажите требуемый шаг!");
+                MessageBox.Show("Укажите требуемый шаг!", "Пустое поле");
             }
             else
             {
-                string al = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюяABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-                step = Convert.ToInt32(sd);
-                for (int i = 0; i < s.Length; i++)
+                try
                 {
-                    bool f1 = false;
-                    for (int k = 0; k < al.Length; k++)
+                    step = Convert.ToInt32(sd);
+                }
+                catch
+                {
+
+                    MessageBox.Show("В строке есть недопустимые символы!", "Ошибка ввода");
+                }
+                finally
+                {
+                    if (step < 0)
                     {
-                        if (s[i] == al[k])
+                        for (int i = 0; i < 1; i++)
                         {
-                            f1 = true;
+                            //MessageBox.Show("Шаг должен быть больше 0!");
+                            break;
                         }
                     }
-                    if (f1 == true)
+                    else if (step > 32)
                     {
-                        for (int j = 0; j < alRu.Length; j++)
+                        for (int i = 0; i < 1; i++)
                         {
-                            if (s[i] == alRu[j])
-                            {
-                                code.Append(alRu[(j + step) % alRu.Length]);
-                            }
+                            MessageBox.Show("Шаг должен быть меньше 32!");
+                            break;
                         }
-                        for (int j = 0; j < alEn.Length; j++)
+
+                    }
+                    else
+                    {
+                        for (int i = 0; i < s.Length; i++)
                         {
-                            if (s[i] == alEn[j])
+                            bool f1 = false;
+                            for (int k = 0; k < al.Length; k++)
                             {
-                                code.Append(alEn[(j + step) % alEn.Length]);
+                                if (s[i] == al[k])
+                                {
+                                    f1 = true;
+                                }
                             }
+                            if (f1 == true)
+                            {
+                                for (int j = 0; j < alRu.Length; j++)
+                                {
+                                    if (s[i] == alRu[j])
+                                    {
+                                        code.Append(alRu[(j + step) % alRu.Length]);
+                                    }
+                                }
+                                for (int j = 0; j < alEn.Length; j++)
+                                {
+                                    if (s[i] == alEn[j])
+                                    {
+                                        code.Append(alEn[(j + step) % alEn.Length]);
+                                    }
+                                }
+                            }
+                            else code.Append(s[i]);
                         }
                     }
-                    else code.Append(s[i]);     
                 }
             }
             return code.ToString();
@@ -230,46 +262,80 @@ namespace Ciphers
 
         public string Orientation2(string inp) //ori - для обозачения боока в котором происходит шифрование
         {
-            int step = 0;
+            int step = -1;
             StringBuilder code = new StringBuilder();
             string s = textBox1.Text; // s - связана с вводимым текстом
+            if (textBox1.Text == "")
+            {
+                MessageBox.Show("Введите текст!", "Пустое поле");
+            }
             string sd = textBox3.Text; //sd-количество шагов шифра (ключ шифрования)
             if (textBox3.Text == "")
             {
-                MessageBox.Show("Укажите требуемый шаг!");
+                MessageBox.Show("Укажите требуемый шаг!", "Пустое поле");
             }
             else
             {
-                string al = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюяABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-                step = Convert.ToInt32(sd);
-                for (int i = 0; i < s.Length; i++)
+                try
                 {
-                    bool f1 = false;
-                    for (int k = 0; k < al.Length; k++)
+                    step = Convert.ToInt32(sd);
+                }
+                catch
+                {
+
+                    MessageBox.Show("В строке есть недопустимые символы!", "Ошибка ввода");
+                }
+                finally
+                {
+                    if (step < 0)
                     {
-                        if (s[i] == al[k])
+                        for (int i = 0; i < 1; i++)
                         {
-                            f1 = true;
+                            //MessageBox.Show("Шаг должен быть больше 0!");
+                            break;
                         }
                     }
-                    if (f1 == true)
+                    else if (step > 32)
                     {
-                        for (int j = 0; j < alRu.Length; j++)
+                        for (int i = 0; i < 1; i++)
                         {
-                            if (s[i] == alRu[j])
-                            {
-                                code.Append(alRu[(j - step + alRu.Length) % alRu.Length]);
-                            }
+                            MessageBox.Show("Шаг должен быть меньше 32!");
+                            break;
                         }
-                        for (int j = 0; j < alEn.Length; j++)
+
+                    }
+                    else
+                    {
+                        for (int i = 0; i < s.Length; i++)
                         {
-                            if (s[i] == alEn[j])
+                            bool f1 = false;
+                            for (int k = 0; k < al.Length; k++)
                             {
-                                code.Append(alEn[(j - step + alEn.Length) % alEn.Length]);
+                                if (s[i] == al[k])
+                                {
+                                    f1 = true;
+                                }
                             }
+                            if (f1 == true)
+                            {
+                                for (int j = 0; j < alRu.Length; j++)
+                                {
+                                    if (s[i] == alRu[j])
+                                    {
+                                        code.Append(alRu[(j - step + alRu.Length) % alRu.Length]);
+                                    }
+                                }
+                                for (int j = 0; j < alEn.Length; j++)
+                                {
+                                    if (s[i] == alEn[j])
+                                    {
+                                        code.Append(alEn[(j - step + alEn.Length) % alEn.Length]);
+                                    }
+                                }
+                            }
+                            else code.Append(s[i]);
                         }
                     }
-                    else code.Append(s[i]);
                 }
             }
             return code.ToString();
@@ -288,7 +354,7 @@ namespace Ciphers
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             string selectedState = comboBox1.SelectedItem.ToString();
-            if(selectedState != "Шифр Цезаря")
+            if (selectedState != "Шифр Цезаря")
             {
                 label4.Visible = false;
                 textBox3.Visible = false;
