@@ -37,6 +37,12 @@ namespace Ciphers
                 case "Шифр Цезаря":
                     textBox2.Text = Orientation(textBox1.Text); //Зашифровать Цезарь
                     break;
+                case "Шифр Сцитала":
+                    textBox2.Text = Scitala1(textBox1.Text); //Зашифровать Атбаш
+                    break;
+                case "Квадрат Полибия":
+                   // textBox2.Text = Square_P1(textBox1.Text); //Зашифровать Цезарь
+                    break;
             }
 
         }
@@ -52,8 +58,118 @@ namespace Ciphers
                 case "Шифр Цезаря":
                     textBox2.Text = Orientation2(textBox1.Text); //Расшифровать Цезарь
                     break;
+                case "Шифр Сцитала":
+                    textBox2.Text = Atbash1(textBox1.Text); //Зашифровать Атбаш
+                    break;
+                case "Квадрат Полибия":
+                    textBox2.Text = Orientation(textBox1.Text); //Зашифровать Цезарь
+                    break;
             }
 
+        }
+
+        public string Scitala1(string inp)
+        {
+            int diameter = -1;
+            StringBuilder code = new StringBuilder();
+            StringBuilder ciphertext = new StringBuilder();
+            string s = textBox1.Text; // s - связана с вводимым текстом
+            string sd = textBox5.Text; //sd-диаметр
+            if (textBox1.Text == "") //Проверка на пустое поле
+            {
+                MessageBox.Show("Введите текст!", "Пустое поле");
+            }
+            if (textBox5.Text == "") //Проверка на пустой ключ
+            {
+                MessageBox.Show("Укажите требуемый шаг!", "Пустое поле");
+            }
+            else
+            {
+                try //Отлов исключений
+                {
+                    diameter = Convert.ToInt32(sd); //Перевод string в int
+                }
+                catch
+                {
+                    MessageBox.Show("В строке есть недопустимые символы!", "Ошибка ввода"); //Случай, если будут лишние символы
+                }
+                finally
+                {
+                    if (diameter < 0) //Если отрицательный шаг
+                    {
+                        for (int i = 0; i < 1; i++)
+                        {
+                            MessageBox.Show("Шаг должен быть больше 0!");
+                            break;
+                        }
+                    }
+                    else if (diameter == 0) //Если 0 шаг
+                    {
+                        for (int i = 0; i < 1; i++)
+                        {
+                            MessageBox.Show("Шаг должен быть больше 0!");
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        int count = 0;
+                        int column = 0;
+                        int del = 0;
+                        string open_text = s;
+                        if(s.Length % diameter != 0)
+                        {
+                            column = (s.Length / diameter) + 1;
+                            del = s.Length % diameter;
+                            for(int i = 0; i < (diameter - del); i++)
+                            {
+                                open_text = open_text + " ";
+                                count++;
+                            }
+                        }
+                        else
+                        {
+                            column = s.Length / diameter;
+                        }
+
+                        string c = Convert.ToString(column);
+                        string c1 = Convert.ToString(s.Length);
+                        string c2 = Convert.ToString(count);
+                        MessageBox.Show(c1, "s.Length");
+                        //MessageBox.Show(sd, "diameter");
+                        MessageBox.Show(c, "column");
+                        MessageBox.Show(c2, "count");
+
+                        
+                        
+                        for (int i = 0; i < column; i++)
+                        {
+                            for (int j = 0; j < diameter; j++)
+                            {
+                                
+                                    
+                                        ciphertext.Append(s[(i+(j * diameter)) % s.Length]);
+                                    
+                                
+                                //int step = j * diameter;
+                                //if (step > s.Length - count)
+                                //{
+                                //    //code.Append(s[(i + (j * diameter)+count) % s.Length]);
+                                //}
+                                //else
+                                //{
+                                //    //code.Append(s[(i + (j * diameter)) % s.Length]);
+                                //}
+                                
+
+                            }
+                        }
+
+                    }
+                }
+
+            }
+            return ciphertext.ToString();
         }
 
         public string Atbash1(string inp) //Зашифровать Атбаш
@@ -350,22 +466,47 @@ namespace Ciphers
 
         }
 
+        List<Label> label4List = new List<Label>();
+
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             string selectedState = comboBox1.SelectedItem.ToString();
-            if (selectedState != "Шифр Цезаря") //Видимость поля для ключа
+            if (selectedState == "Шифр Цезаря") //Видимость поля для ключа
             {
-                label4.Visible = false; 
-                textBox3.Visible = false;
+                label4.Visible = true; 
+                textBox3.Visible = true;
             }
             else
             {
-                label4.Visible = true;
-                textBox3.Visible = true;
+                label4.Visible = false;
+                textBox3.Visible = false;
+            }
+ 
+            if (selectedState == "Шифр Сцитала") //Видимость поля для ключа
+            {
+                
+                label6.Visible = true;
+                textBox5.Visible = true;
+            }
+            else
+            {
+                
+                label6.Visible = false;
+                textBox5.Visible = false;
             }
         }
 
         private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label4_Click(object sender, EventArgs e)
         {
 
         }
