@@ -59,20 +59,19 @@ namespace Ciphers
                     textBox2.Text = Orientation2(textBox1.Text); //Расшифровать Цезарь
                     break;
                 case "Шифр Сцитала":
-                    textBox2.Text = Atbash1(textBox1.Text); //Зашифровать Атбаш
+                    textBox2.Text = Scitala2(textBox1.Text); //Зашифровать Атбаш
                     break;
                 case "Квадрат Полибия":
-                    textBox2.Text = Orientation(textBox1.Text); //Зашифровать Цезарь
+                    //textBox2.Text = Orientation(textBox1.Text); //Зашифровать Цезарь
                     break;
             }
 
         }
 
-        public string Scitala1(string inp)
+        public string Scitala1(string inp) //Шифрование Сцитала
         {
             int diameter = -1;
             StringBuilder code = new StringBuilder();
-            StringBuilder ciphertext = new StringBuilder();
             string s = textBox1.Text; // s - связана с вводимым текстом
             string sd = textBox5.Text; //sd-диаметр
             if (textBox1.Text == "") //Проверка на пустое поле
@@ -113,55 +112,30 @@ namespace Ciphers
                     }
                     else
                     {
-                        int count = 0;
-                        int column = 0;
-                        int del = 0;
-                        string open_text = s;
-                        if(s.Length % diameter != 0)
+                        int count = 0; //Количество добавленных пробелов
+                        int col = 0; //Число столбцов
+                        int del = 0; //Остаток от деления
+                        string open_text = s; //Строка для хранения введённого + пробелы
+                        if(s.Length % diameter != 0) //Определяем столбцы
                         {
-                            column = (s.Length / diameter) + 1;
-                            del = s.Length % diameter;
-                            for(int i = 0; i < (diameter - del); i++)
+                            col = (s.Length / diameter) + 1; //Столбцов
+                            del = s.Length % diameter;//Остаток
+                            for(int i = 0; i < (diameter - del); i++) //Если нужны пробелы
                             {
                                 open_text = open_text + " ";
-                                count++;
+                                count++;//Их число
                             }
                         }
-                        else
+                        else//Если не нужны
                         {
-                            column = s.Length / diameter;
+                            col = s.Length / diameter;
                         }
-
-                        string c = Convert.ToString(column);
-                        string c1 = Convert.ToString(s.Length);
-                        string c2 = Convert.ToString(count);
-                        MessageBox.Show(c1, "s.Length");
-                        //MessageBox.Show(sd, "diameter");
-                        MessageBox.Show(c, "column");
-                        MessageBox.Show(c2, "count");
-
-                        
-                        
-                        for (int i = 0; i < column; i++)
+                        //Процес шифрования
+                        for (int i = 0; i < col; i++)//Проход по столбцам
                         {
-                            for (int j = 0; j < diameter; j++)
+                            for (int j = 0; j < diameter; j++)//Проход по символам в столбце
                             {
-                                
-                                    
-                                        ciphertext.Append(s[(i+(j * diameter)) % s.Length]);
-                                    
-                                
-                                //int step = j * diameter;
-                                //if (step > s.Length - count)
-                                //{
-                                //    //code.Append(s[(i + (j * diameter)+count) % s.Length]);
-                                //}
-                                //else
-                                //{
-                                //    //code.Append(s[(i + (j * diameter)) % s.Length]);
-                                //}
-                                
-
+                                code.Append(open_text[((j * col) + i) % open_text.Length]);
                             }
                         }
 
@@ -169,7 +143,80 @@ namespace Ciphers
                 }
 
             }
-            return ciphertext.ToString();
+            return code.ToString();
+        }
+
+        public string Scitala2(string inp) //РАСШИФРОВАНИЕ Сцитала
+        {
+            int diameter = -1;
+            StringBuilder code = new StringBuilder();
+            string s = textBox1.Text; // s - связана с вводимым текстом
+            string sd = textBox5.Text; //sd-диаметр
+            string Out = "";
+            var text = new char[s.Length]; //Для хранения полученных символов
+            if (textBox1.Text == "") //Проверка на пустое поле
+            {
+                MessageBox.Show("Введите текст!", "Пустое поле");
+            }
+            if (textBox5.Text == "") //Проверка на пустой ключ
+            {
+                MessageBox.Show("Укажите требуемый шаг!", "Пустое поле");
+            }
+            else
+            {
+                try //Отлов исключений
+                {
+                    diameter = Convert.ToInt32(sd); //Перевод string в int
+                }
+                catch
+                {
+                    MessageBox.Show("В строке есть недопустимые символы!", "Ошибка ввода"); //Случай, если будут лишние символы
+                }
+                finally
+                {
+                    if (diameter < 0) //Если отрицательный шаг
+                    {
+                        for (int i = 0; i < 1; i++)
+                        {
+                            MessageBox.Show("Шаг должен быть больше 0!");
+                            break;
+                        }
+                    }
+                    else if (diameter == 0) //Если 0 шаг
+                    {
+                        for (int i = 0; i < 1; i++)
+                        {
+                            MessageBox.Show("Шаг должен быть больше 0!");
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        
+                        int col = 0; //Число столбцов
+                        col = s.Length / diameter;
+                        
+                        int t = 0;
+
+                        for(int i = 0; i < col; i++)
+                        {
+                            for(int j = 0; j < diameter; j++)
+                            {
+                                text[(col * j) + 1] = s[t];
+                                t++;
+                            }
+                        }
+                        //string.Join("", text);
+                        //Out = new string(text);
+                        //MessageBox.Show(Out);
+                        Out = new string(text);
+                        code.Append(Out);
+                    }
+                }
+
+            }
+            return code.ToString();
+
         }
 
         public string Atbash1(string inp) //Зашифровать Атбаш
