@@ -166,7 +166,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(337, 310);
+            this.label6.Location = new System.Drawing.Point(337, 255);
             this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(148, 21);
@@ -176,7 +176,7 @@
             // 
             // textBox5
             // 
-            this.textBox5.Location = new System.Drawing.Point(337, 335);
+            this.textBox5.Location = new System.Drawing.Point(337, 280);
             this.textBox5.Margin = new System.Windows.Forms.Padding(4);
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(263, 26);

@@ -112,36 +112,44 @@ namespace Ciphers
                     }
                     else
                     {
-                        int count = 0; //Количество добавленных пробелов
-                        int col = 0; //Число столбцов
-                        int del = 0; //Остаток от деления
-                        string open_text = s; //Строка для хранения введённого + пробелы
-                        if(s.Length % diameter != 0) //Определяем столбцы
+                        if(diameter >= s.Length)//Проверка на размер диаметра
                         {
-                            col = (s.Length / diameter) + 1; //Столбцов
-                            del = s.Length % diameter;//Остаток
-                            for(int i = 0; i < (diameter - del); i++) //Если нужны пробелы
+                            int length = s.Length;
+                            string Out = length.ToString();
+                            MessageBox.Show("Диаметр должен быть меньше длины сообщения!", "Некорректный диаметр");
+                            MessageBox.Show(Out, "Длина сообщения");
+                        }
+                        else
+                        {
+                            int count = 0; //Количество добавленных пробелов
+                            int col = 0; //Число столбцов
+                            int del = 0; //Остаток от деления
+                            string open_text = s; //Строка для хранения введённого + пробелы
+                            if (s.Length % diameter != 0) //Определяем столбцы
                             {
-                                open_text = open_text + " ";
-                                count++;//Их число
+                                col = (s.Length / diameter) + 1; //Столбцов
+                                del = s.Length % diameter;//Остаток
+                                for (int i = 0; i < (diameter - del); i++) //Если нужны пробелы
+                                {
+                                    open_text = open_text + " ";
+                                    count++;//Их число
+                                }
+                            }
+                            else//Если не нужны
+                            {
+                                col = s.Length / diameter;
+                            }
+                            //Процес шифрования
+                            for (int i = 0; i < col; i++)//Проход по столбцам
+                            {
+                                for (int j = 0; j < diameter; j++)//Проход по символам в столбце
+                                {
+                                    code.Append(open_text[((j * col) + i) % open_text.Length]);
+                                }
                             }
                         }
-                        else//Если не нужны
-                        {
-                            col = s.Length / diameter;
-                        }
-                        //Процес шифрования
-                        for (int i = 0; i < col; i++)//Проход по столбцам
-                        {
-                            for (int j = 0; j < diameter; j++)//Проход по символам в столбце
-                            {
-                                code.Append(open_text[((j * col) + i) % open_text.Length]);
-                            }
-                        }
-
                     }
                 }
-
             }
             return code.ToString();
         }
@@ -152,8 +160,9 @@ namespace Ciphers
             StringBuilder code = new StringBuilder();
             string s = textBox1.Text; // s - связана с вводимым текстом
             string sd = textBox5.Text; //sd-диаметр
-            string Out = "";
-            var text = new char[s.Length]; //Для хранения полученных символов
+            string Out = ""; //Строка для расшифрованной строки
+            var text = new char[s.Length]; //Для хранения введённых символов
+            var text2 = new char[s.Length]; //Для хранения прочитанных символов
             if (textBox1.Text == "") //Проверка на пустое поле
             {
                 MessageBox.Show("Введите текст!", "Пустое поле");
@@ -192,31 +201,59 @@ namespace Ciphers
                     }
                     else
                     {
-                        
-                        int col = 0; //Число столбцов
-                        col = s.Length / diameter;
-                        
-                        int t = 0;
-
-                        for(int i = 0; i < col; i++)
+                        if (diameter >= s.Length)//Проверка на размер диаметра
                         {
-                            for(int j = 0; j < diameter; j++)
-                            {
-                                text[(col * j) + 1] = s[t];
-                                t++;
-                            }
+                            int length = s.Length;
+                            string Out1 = length.ToString();
+                            MessageBox.Show("Диаметр должен быть меньше длины сообщения!", "Некорректный диаметр");
+                            MessageBox.Show(Out1, "Длина сообщения");
                         }
-                        //string.Join("", text);
-                        //Out = new string(text);
-                        //MessageBox.Show(Out);
-                        Out = new string(text);
-                        code.Append(Out);
+                        else
+                        {
+
+                            int col = 0; //Число столбцов
+                            col = s.Length / diameter;
+
+                            for (int i = 0; i < s.Length; i++)
+                            {
+                                text[i] = s[i]; //Из введённой строки string в строку char[]
+                                                //Нужно для дальнейшего перевода в двумерный массив и обработки
+                            }
+
+                            char[,] mass = new char[col, diameter]; //Двумерный массив размером[столбцы, диаметр]
+                            int t = 0; //Индекс дял перехода по text
+                            for (int i = 0; i < col; i++)
+                            {
+                                for (int j = 0; j < diameter; j++)
+                                {
+                                    mass[i, j] = text[t];//Записываем из строки char[] в двумерный массив
+                                    t++;
+                                }
+                            }
+
+                            int k = 0;//Индекс для прохода по text2
+                            int Char = 0;//Индекс для перехода на конкретную строку букв
+                            for (int stroka = 0; stroka < diameter; stroka++)
+                            {
+                                for (int i = 0; i < col; i++)
+                                {
+                                    for (int j = Char; j < Char + 1; j++)
+                                    {
+                                        text2[k] = mass[i, j];//Из массива в строку char[]
+                                        k++;//Для перехода по строке char[]
+                                    }
+                                }
+                                Char++;//Буква в массиве
+                            }
+
+                            Out = new string(text2);
+                            Out = Out.Trim(); //Удаляем пробелы в начале и в конце строки, как лишние
+                            code.Append(Out); //Для вывода строки
+                        }
                     }
                 }
-
             }
             return code.ToString();
-
         }
 
         public string Atbash1(string inp) //Зашифровать Атбаш
@@ -512,8 +549,6 @@ namespace Ciphers
         {
 
         }
-
-        List<Label> label4List = new List<Label>();
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
