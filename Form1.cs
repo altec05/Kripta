@@ -73,12 +73,12 @@ namespace Ciphers
             int diameter = -1;
             StringBuilder code = new StringBuilder();
             string s = textBox1.Text; // s - связана с вводимым текстом
-            string sd = textBox5.Text; //sd-диаметр
+            string sd = textBox3.Text; //sd-диаметр
             if (textBox1.Text == "") //Проверка на пустое поле
             {
                 MessageBox.Show("Введите текст!", "Пустое поле");
             }
-            if (textBox5.Text == "") //Проверка на пустой ключ
+            if (textBox3.Text == "") //Проверка на пустой ключ
             {
                 MessageBox.Show("Укажите требуемый шаг!", "Пустое поле");
             }
@@ -159,7 +159,7 @@ namespace Ciphers
             int diameter = -1;
             StringBuilder code = new StringBuilder();
             string s = textBox1.Text; // s - связана с вводимым текстом
-            string sd = textBox5.Text; //sd-диаметр
+            string sd = textBox3.Text; //sd-диаметр
             string Out = ""; //Строка для расшифрованной строки
             var text = new char[s.Length]; //Для хранения введённых символов
             var text2 = new char[s.Length]; //Для хранения прочитанных символов
@@ -167,7 +167,7 @@ namespace Ciphers
             {
                 MessageBox.Show("Введите текст!", "Пустое поле");
             }
-            if (textBox5.Text == "") //Проверка на пустой ключ
+            if (textBox3.Text == "") //Проверка на пустой ключ
             {
                 MessageBox.Show("Укажите требуемый шаг!", "Пустое поле");
             }
@@ -553,28 +553,37 @@ namespace Ciphers
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             string selectedState = comboBox1.SelectedItem.ToString();
-            if (selectedState == "Шифр Цезаря") //Видимость поля для ключа
+            if ((selectedState == "Шифр Цезаря") || (selectedState == "Шифр Сцитала")) //Видимость поля для ключа
             {
-                label4.Visible = true; 
                 textBox3.Visible = true;
+                if ((selectedState == "Шифр Цезаря"))
+                {
+                    label4.Visible = true;
+                    label6.Visible = false;
+                }
+                if (selectedState == "Шифр Сцитала")
+                {
+                    label6.Visible = true;
+                    label4.Visible = false;
+                }
             }
             else
             {
                 label4.Visible = false;
+                label5.Visible = false;
+                label6.Visible = false;
                 textBox3.Visible = false;
             }
- 
-            if (selectedState == "Шифр Сцитала") //Видимость поля для ключа
+
+            if (selectedState == "Квадрат Полибия") //Видимость поля для ключа
             {
-                
-                label6.Visible = true;
-                textBox5.Visible = true;
+                label5.Visible = true;
+                textBox4.Visible = true;
             }
             else
             {
-                
-                label6.Visible = false;
-                textBox5.Visible = false;
+                label5.Visible = false;
+                textBox4.Visible = false;
             }
         }
 
