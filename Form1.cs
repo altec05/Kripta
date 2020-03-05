@@ -26,6 +26,7 @@ namespace Ciphers
         string alRu = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя";
         string alEn = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         string al = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюяABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        string Numbers = "1234567890!@#$%^&*()_+!~`№;%:?*-=[]{};:',./<>\0|";
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -163,7 +164,7 @@ namespace Ciphers
                                         code.Append(open_text[((j * col) + i) % open_text.Length]);
                                         numbers++;
                                     }
-                                    
+
 
                                 }
                             }
@@ -296,7 +297,7 @@ namespace Ciphers
                                         {
                                             break;
                                         }
-                                        
+
                                     }
                                 }
                                 Char++;//Буква в массиве
@@ -327,6 +328,7 @@ namespace Ciphers
             int alphabet2 = 0; //Для сравнения алфавитов ключа и строки
             string Out = ""; //Строка для расшифрованной строки
             var text1 = new char[s.Length]; //Для хранения введённых символов
+            string s1 = "";
 
             if (textBox1.Text == "") //Проверка на пустое поле
             {
@@ -349,7 +351,7 @@ namespace Ciphers
 
                 for (int i = 0; i < key.Length; i++)//Проверка ключа
                 {
-                    
+
 
                     int indexOfChar = -1;
                     indexOfChar = al.IndexOf(key[i]);
@@ -357,10 +359,10 @@ namespace Ciphers
                     {
                         MessageBox.Show("Ключ должен быть буквенным!", "Неверный ключ");
                         bukva = false;
-                        return"";
+                        return "";
                     }
                 }
-                if(bukva == false)
+                if (bukva == false)
                 {
                     MessageBox.Show("Тут не только буквы!", "Ошибка ключа");
                     return "";
@@ -383,15 +385,15 @@ namespace Ciphers
                     bool ru1 = false;
                     bool En1 = false;
                     bool en1 = false;
-                   
+
                     //Определение алфавита для первого символа и сравнение других
                     if (indexOfChar1 >= 0)
                     {
-                        for(int i = 0; i < key.Length; i++)
+                        for (int i = 0; i < key.Length; i++)
                         {
                             indexOfChar1 = -1;
                             indexOfChar1 = alRu1.IndexOf(key[i]);
-                            if(indexOfChar1 >= 0)
+                            if (indexOfChar1 >= 0)
                             {
                                 R1++;
                             }
@@ -486,12 +488,12 @@ namespace Ciphers
                 int check = 0;
                 for (int i = 0; i < s.Length; i++)//Число подходящих символов
                 {
-                   int indexOfChar = -1;
+                    int indexOfChar = -1;
                     indexOfChar = al.IndexOf(s[i]);
                     if (indexOfChar >= 0)
                     {
                         check++;
-                    }   
+                    }
                 }
                 int j = 0;
                 var text_check = new char[check];//Для хранения строки для проверки
@@ -617,369 +619,1455 @@ namespace Ciphers
                         return "";
                     }
                 }
-                //Создаём массив для квадрата Полибия
-                char[,] mass;
-                //Создаём массивы для индексов букв вводимого текста
-                int[,] index1 = new int[s.Length, 2];
-                int[,] index2 = new int[s.Length, 2];
-                int[] index12;
-
-                switch (alphabet1)
-                {
-                    case 1://Русские большие
-                        mass = new char[6,6];
-                        string t = skey + alRu1;
-                        for (int i = 0; i < skey.Length; i++)
+                
+                for (int S = 0; S < s.Length; S++)
+                {//ПРОВЕРКА НА БУКВУ
+                    int index = -1;
+                    index = al.IndexOf(s[S]);
+                    if (index < 0)
+                    {
+                        text1[S] = s[S];
+                        Out = new string(text1);
+                        
+                    }
+                    else
+                    {
+                        //Создаём массив для квадрата Полибия
+                        char[,] mass;
+                        switch (alphabet1)
                         {
-                            int indexOfChar = -1;
-                            indexOfChar = t.LastIndexOf(skey[i]);
-                            if (indexOfChar >= 0)
-                            {
-                                t = t.Remove(indexOfChar, 1);
-                            }
-                        }
-                        var table = new char[t.Length];
-                        for (int i = 0; i < t.Length; i++)//Текст из string в char[]
-                        {
-                            table[i] = t[i];
-                        }
-
-                        int k = 0;
-                        for (int i = 0; i < 6; i++)
-                        {
-                            for (int n = 0; n < 6; n++)
-                            {
-                                if(k > 32)
+                            case 1://Русские большие
+                                mass = new char[6, 6];
+                                string t = skey + alRu1;
+                                for (int i = 0; i < skey.Length; i++)
                                 {
-                                    k++;
-                                    continue;
+                                    int indexOfChar = -1;
+                                    indexOfChar = t.LastIndexOf(skey[i]);
+                                    if (indexOfChar >= 0)
+                                    {
+                                        t = t.Remove(indexOfChar, 1);
+                                    }
+                                }
+                                var table = new char[t.Length];
+                                for (int i = 0; i < t.Length; i++)//Текст из string в char[]
+                                {
+                                    table[i] = t[i];
+                                }
+
+                                int k = 0;
+                                for (int i = 0; i < 6; i++)
+                                {
+                                    for (int n = 0; n < 6; n++)
+                                    {
+                                        if (k > 32)
+                                        {
+                                            k++;
+                                            continue;
+                                        }
+                                        else
+                                        {
+                                            mass[i, n] = table[k];
+                                            k++;
+                                        }
+                                    }
+                                }
+
+                                int column = 0;
+                                int row = 0;
+
+                                for (int m = 0; m < 6; m++)
+                                {
+                                    for (int n = 0; n < 6; n++)
+                                    {
+                                        if(S == 6)
+                                        {
+                                            if (s[S - 1] == mass[m, n])
+                                            {
+                                                row = m;
+                                                column = n;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (s[S] == mass[m, n])
+                                            {
+                                                row = m;
+                                                column = n;
+                                            }
+                                        }
+                                        
+                                    }
+                                }
+
+                                if (row < 5)
+                                {
+                                    if((row == 4)&&(column > 2))
+                                    {
+                                        row = 0;
+                                        text1[S] = mass[row, column];
+                                    }
+                                    else
+                                    {
+                                        text1[S] = mass[row + 1, column];
+                                    }
                                 }
                                 else
                                 {
-                                    mass[i, n] = table[k];
-                                    k++;
+                                    row = 0;
+                                    text1[S] = mass[row, column];
                                 }
-                            }
-                        }
-                        int ind1 = 0;
-                        //Ищем индексы введённого текста
-                        for (k = 0; k < s.Length; k++)
-                        {
-                            for (int i = 0; i < 6; i++)
-                            {
-                                for (int n = 0; n < 6; n++)
+
+
+                                Out = new string(text1);//Для вывода строки
+                               //code.Append(text1); //Для вывода строки
+                                break;
+                            case 2://Русские маленькие
+                                mass = new char[6, 6];
+                                t = skey + alru1;
+                                for (int i = 0; i < skey.Length; i++)
                                 {
-                                    if (s[k] == mass[i, n])
+                                    int indexOfChar = -1;
+                                    indexOfChar = t.LastIndexOf(skey[i]);
+                                    if (indexOfChar >= 0)
                                     {
-                                        index1[ind1, 1] = i;
-                                        index1[ind1, 0] = n;
-                                        ind1++;
+                                        t = t.Remove(indexOfChar, 1);
                                     }
                                 }
-                            }
-                        }
-
-                        k = 0;
-                        index12 = new int[s.Length * 2];
-                        //Преобразуем координаты
-                        for(int i = 0; i < s.Length; i++)//Первая строка
-                        {
-                            index12[k] = index1[i, 0];
-                            k++;
-                        }
-                        for (int i = 0; i < s.Length; i++)//Вторая строка
-                        {
-                            index12[k] = index1[i, 1];
-                            k++;
-                        }
-                        //Заполняем
-                        k = 0;
-                        for(int i = 0; i < s.Length; i++)
-                        {
-                            for (int l = 0; l < 2; l++)
-                            {
-                                index2[i, l] = index12[k];
-                                k++;
-                            }
-                        }
-                        //Ищем буквы по индексам
-                        int g = 0;
-                        for (int i = 0; i < s.Length; i++)
-                        {
-                            text1[i] = mass[index2[g,1],index2[g,0]];
-                            g++;
-                        }
-                        Out = new string(text1);//Для вывода строки
-                        code.Append(Out); //Для вывода строки
-                        break;
-                    case 2://Русские маленькие
-                        mass = new char[6,6];
-                        t = skey + alru1;
-                        for (int i = 0; i < skey.Length; i++)
-                        {
-                            int indexOfChar = -1;
-                            indexOfChar = t.LastIndexOf(skey[i]);
-                            if (indexOfChar >= 0)
-                            {
-                                t = t.Remove(indexOfChar, 1);
-                            }
-                        }
-                        table = new char[t.Length];
-                        for (int i = 0; i < t.Length; i++)//Текст из string в char[]
-                        {
-                            table[i] = t[i];
-                        }
-
-                        k = 0;
-                        for (int i = 0; i < 6; i++)//Заполнение таблицы шифрования
-                        {
-                            for (int n = 0; n < 6; n++)
-                            {
-                                if (k > 32)
+                                table = new char[t.Length];
+                                for (int i = 0; i < t.Length; i++)//Текст из string в char[]
                                 {
-                                    k++;
-                                    continue;
+                                    table[i] = t[i];
+                                }
+
+                                k = 0;
+                                for (int i = 0; i < 6; i++)
+                                {
+                                    for (int n = 0; n < 6; n++)
+                                    {
+                                        if (k > 32)
+                                        {
+                                            k++;
+                                            continue;
+                                        }
+                                        else
+                                        {
+                                            mass[i, n] = table[k];
+                                            k++;
+                                        }
+                                    }
+                                }
+
+                                column = 0;
+                                row = 0;
+
+                                for (int m = 0; m < 6; m++)
+                                {
+                                    for (int n = 0; n < 6; n++)
+                                    {
+                                        if (S == 6)
+                                        {
+                                            if (s[S - 1] == mass[m, n])
+                                            {
+                                                row = m;
+                                                column = n;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (s[S] == mass[m, n])
+                                            {
+                                                row = m;
+                                                column = n;
+                                            }
+                                        }
+
+                                    }
+                                }
+
+                                if (row < 5)
+                                {
+                                    if ((row == 4) && (column > 2))
+                                    {
+                                        row = 0;
+                                        text1[S] = mass[row, column];
+                                    }
+                                    else
+                                    {
+                                        text1[S] = mass[row + 1, column];
+                                    }
                                 }
                                 else
                                 {
-                                    mass[i, n] = table[k];
-                                    k++;
+                                    row = 0;
+                                    text1[S] = mass[row, column];
                                 }
-                            }
-                        }
 
-                        ind1 = 0;
-                        //Ищем индексы введённого текста
-                        for (k = 0; k < s.Length; k++)
-                        {
-                            for (int i = 0; i < 6; i++)
-                            {
-                                for (int n = 0; n < 6; n++)
+
+                                Out = new string(text1);//Для вывода строки
+                                break;
+                            case 3:
+                                mass = new char[5, 5];
+                                t = skey + alEn1;
+                                for (int i = 0; i < skey.Length; i++)
                                 {
-                                    if (s[k] == mass[i, n])
+                                    int indexOfChar = -1;
+                                    indexOfChar = t.LastIndexOf(skey[i]);
+                                    if (indexOfChar >= 0)
                                     {
-                                        index1[ind1, 1] = i;
-                                        index1[ind1, 0] = n;
-                                        ind1++;
+                                        t = t.Remove(indexOfChar, 1);
                                     }
                                 }
-                            }
-                        }
 
-                        k = 0;
-                        index12 = new int[s.Length * 2];
-                        //Преобразуем координаты
-                        for (int i = 0; i < s.Length; i++)//Первая строка
-                        {
-                            index12[k] = index1[i, 0];
-                            k++;
-                        }
-                        for (int i = 0; i < s.Length; i++)//Вторая строка
-                        {
-                            index12[k] = index1[i, 1];
-                            k++;
-                        }
-                        //Заполняем
-                        k = 0;
-                        for (int i = 0; i < s.Length; i++)
-                        {
-                            for (int l = 0; l < 2; l++)
-                            {
-                                index2[i, l] = index12[k];
-                                k++;
-                            }
-                        }
-                        //Ищем буквы по индексам
-                        g = 0;
-                        for (int i = 0; i < s.Length; i++)
-                        {
-                            text1[i] = mass[index2[g, 1], index2[g, 0]];
-                            g++;
-                        }
-                        Out = new string(text1);//Для вывода строки
-                        break;
-                    case 3:
-                        mass = new char[5,5];
-                        t = skey + alEn1;
-                        for (int i = 0; i < skey.Length; i++)
-                        {
-                            int indexOfChar = -1;
-                            indexOfChar = t.LastIndexOf(skey[i]);
-                            if (indexOfChar >= 0)
-                            {
-                                t = t.Remove(indexOfChar, 1);
-                            }
-                        }
-
-                        int index = -1;
-                        index = t.LastIndexOf('J');
-                        if (index >= 0)
-                        {
-                            t = t.Remove(index, 1);
-                        }
-
-                        table = new char[t.Length];
-
-                        for (int i = 0; i < t.Length; i++)//Текст из string в char[]
-                        {
-                            table[i] = t[i];
-                        }
-
-                        k = 0;
-                        for (int i = 0; i < 5; i++)//Заполнение таблицы шифрования
-                        {
-                            for (int n = 0; n < 5; n++)
-                            {
-                                mass[i, n] = table[k];
-                                k++;
-                            }
-                        }
-
-                        ind1 = 0;
-                        //Ищем индексы введённого текста
-                        for (k = 0; k < s.Length; k++)
-                        {
-                            for (int i = 0; i < 5; i++)
-                            {
-                                for (int n = 0; n < 5; n++)
+                                index = -1;
+                                index = t.LastIndexOf('J');
+                                if (index >= 0)
                                 {
-                                    if (s[k] == mass[i, n])
-                                    {/////////////////////поменял индексы
-                                        index1[ind1, 1] = i;
-                                        index1[ind1, 0] = n;
-                                        ind1++;
-                                    }
+                                    t = t.Remove(index, 1);
                                 }
-                            }
-                        }
 
-                        k = 0;
-                        index12 = new int[s.Length * 2];
-                        //Преобразуем координаты
-                        for (int i = 0; i < s.Length; i++)//Первая строка
-                        {
-                            index12[k] = index1[i, 0];
-                            k++;
-                        }
-                        for (int i = 0; i < s.Length; i++)//Вторая строка
-                        {
-                            index12[k] = index1[i, 1];
-                            k++;
-                        }
-                        //Заполняем
-                        k = 0;
-                        for (int i = 0; i < s.Length; i++)
-                        {
-                            for (int l = 0; l < 2; l++)
-                            {
-                                index2[i, l] = index12[k];
-                                k++;
-                            }
-                        }
-                        //Ищем буквы по индексам
-                        g = 0;
-                        for (int i = 0; i < s.Length; i++)
-                        {
-                            text1[i] = mass[index2[g, 1], index2[g, 0]];
-                            g++;
-                        }
-                        Out = new string(text1);//Для вывода строки
-                        break;
-                    case 4:
-                        mass = new char[5,5];
-                        t = skey + alen1;
-                        for (int i = 0; i < skey.Length; i++)
-                        {
-                            int indexOfChar = -1;
-                            indexOfChar = t.LastIndexOf(skey[i]);
-                            if (indexOfChar >= 0)
-                            {
-                                t = t.Remove(indexOfChar, 1);
-                            }
-                        }
+                                table = new char[t.Length];
 
-                        index = -1;
-                        index = t.LastIndexOf('j');
-                        if (index >= 0)
-                        {
-                            t = t.Remove(index, 1);
-                        }
-
-                        table = new char[t.Length];
-
-                        for (int i = 0; i < t.Length; i++)//Текст из string в char[]
-                        {
-                            table[i] = t[i];
-                        }
-                        k = 0;
-                        for (int i = 0; i < 5; i++)//Заполнение таблицы шифрования
-                        {
-                            for (int n = 0; n < 5; n++)
-                            {
-                                mass[i, n] = table[k];
-                                k++;
-                            }
-                        }
-
-                        ind1 = 0;
-                        //Ищем индексы введённого текста
-                        for (k = 0; k < s.Length; k++)
-                        {
-                            for (int i = 0; i < 5; i++)
-                            {
-                                for (int n = 0; n < 5; n++)
+                                for (int i = 0; i < t.Length; i++)//Текст из string в char[]
                                 {
-                                    if (s[k] == mass[i, n])
-                                    {/////////////////////поменял индексы
-                                        index1[ind1, 1] = i;
-                                        index1[ind1, 0] = n;
-                                        ind1++;
+                                    table[i] = t[i];
+                                }
+
+                                k = 0;
+                                for (int i = 0; i < 5; i++)
+                                {
+                                    for (int n = 0; n < 5; n++)
+                                    {
+                                        mass[i, n] = table[k];
+                                        k++;
                                     }
                                 }
-                            }
-                        }
 
-                        k = 0;
-                        index12 = new int[s.Length * 2];
-                        //Преобразуем координаты
-                        for (int i = 0; i < s.Length; i++)//Первая строка
-                        {
-                            index12[k] = index1[i, 0];
-                            k++;
+                                column = 0;
+                                row = 0;
+
+                                for (int m = 0; m < 5; m++)
+                                {
+                                    for (int n = 0; n < 5; n++)
+                                    {
+                                        if (s[S] == 'J')
+                                        {
+                                            if(mass[m,n] == 'I')
+                                            {
+                                                row = m;
+                                                column = n;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (s[S] == mass[m, n])
+                                            {
+                                                row = m;
+                                                column = n;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                if (row < 4)
+                                {
+                                    text1[S] = mass[row + 1, column];
+                                }
+                                else
+                                {
+                                    row = 0;
+                                    text1[S] = mass[row, column];
+                                }
+
+
+                                Out = new string(text1);//Для вывода строки
+                                break;
+                            case 4:
+                                mass = new char[5, 5];
+                                t = skey + alen1;
+                                for (int i = 0; i < skey.Length; i++)
+                                {
+                                    int indexOfChar = -1;
+                                    indexOfChar = t.LastIndexOf(skey[i]);
+                                    if (indexOfChar >= 0)
+                                    {
+                                        t = t.Remove(indexOfChar, 1);
+                                    }
+                                }
+
+                                index = -1;
+                                index = t.LastIndexOf('j');
+                                if (index >= 0)
+                                {
+                                    t = t.Remove(index, 1);
+                                }
+
+                                table = new char[t.Length];
+
+                                for (int i = 0; i < t.Length; i++)//Текст из string в char[]
+                                {
+                                    table[i] = t[i];
+                                }
+                                k = 0;
+                                for (int i = 0; i < 5; i++)
+                                {
+                                    for (int n = 0; n < 5; n++)
+                                    {
+                                            mass[i, n] = table[k];
+                                            k++;
+                                    }
+                                }
+
+                                column = 0;
+                                row = 0;
+
+                                for (int m = 0; m < 5; m++)
+                                {
+                                    for (int n = 0; n < 5; n++)
+                                    {
+                                        if (s[S] == 'j')
+                                        {
+                                            if (mass[m, n] == 'i')
+                                            {
+                                                row = m;
+                                                column = n;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (s[S] == mass[m, n])
+                                            {
+                                                row = m;
+                                                column = n;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                if (row < 4)
+                                {
+                                    text1[S] = mass[row + 1, column];
+                                }
+                                else
+                                {
+                                    row = 0;
+                                    text1[S] = mass[row, column];
+                                }
+
+
+                                Out = new string(text1);//Для вывода строки
+                                break;
                         }
-                        for (int i = 0; i < s.Length; i++)//Вторая строка
-                        {
-                            index12[k] = index1[i, 1];
-                            k++;
-                        }
-                        //Заполняем
-                        k = 0;
-                        for (int i = 0; i < s.Length; i++)
-                        {
-                            for (int l = 0; l < 2; l++)
-                            {
-                                index2[i, l] = index12[k];
-                                k++;
-                            }
-                        }
-                        //Ищем буквы по индексам
-                        g = 0;
-                        for (int i = 0; i < s.Length; i++)
-                        {
-                            text1[i] = mass[index2[g, 1], index2[g, 0]];
-                            g++;
-                        }
-                        Out = new string(text1);//Для вывода строки
-                        break;
+                    }
+                    
+
                 }
+
+
+                ////Создаём массив для квадрата Полибия
+                //char[,] mass;
+                ////Создаём массивы для индексов букв вводимого текста
+                //int[,] index1 = new int[s.Length, 2];
+                //int[,] index2 = new int[s.Length, 2];
+                //int[] index12;
+
+                //switch (alphabet1)
+                //{
+                //    case 1://Русские большие
+                //        mass = new char[6,6];
+                //        string t = skey + alRu1;
+                //        for (int i = 0; i < skey.Length; i++)
+                //        {
+                //            int indexOfChar = -1;
+                //            indexOfChar = t.LastIndexOf(skey[i]);
+                //            if (indexOfChar >= 0)
+                //            {
+                //                t = t.Remove(indexOfChar, 1);
+                //            }
+                //        }
+                //        var table = new char[t.Length];
+                //        for (int i = 0; i < t.Length; i++)//Текст из string в char[]
+                //        {
+                //            table[i] = t[i];
+                //        }
+
+                //        int k = 0;
+                //        for (int i = 0; i < 6; i++)
+                //        {
+                //            for (int n = 0; n < 6; n++)
+                //            {
+                //                if(k > 32)
+                //                {
+                //                    if(k == 33)
+                //                    {
+                //                        mass[i, n] = '.';
+                //                        k++;
+                //                    }
+                //                    else if (k == 34)
+                //                    {
+                //                        mass[i, n] = ',';
+                //                        k++;
+                //                    }else if (k == 35)
+                //                    {
+                //                        mass[i, n] = '?';
+                //                        k++;
+                //                    }
+                //                }
+                //                else
+                //                {
+                //                    mass[i, n] = table[k];
+                //                    k++;
+                //                }
+                //            }
+                //        }
+                //        int ind1 = 0;
+                //        //Ищем индексы введённого текста
+                //        for (k = 0; k < s.Length; k++)
+                //        {
+                //            for (int i = 0; i < 6; i++)
+                //            {
+                //                for (int n = 0; n < 6; n++)
+                //                {
+                //                    if (s[k] == mass[i, n])
+                //                    {
+                //                        index1[ind1, 1] = i;
+                //                        index1[ind1, 0] = n;
+                //                        ind1++;
+                //                    }
+                //                }
+                //            }
+                //        }
+
+                //        k = 0;
+                //        index12 = new int[s.Length * 2];
+                //        //Преобразуем координаты
+                //        for(int i = 0; i < s.Length; i++)//Первая строка
+                //        {
+                //            index12[k] = index1[i, 0];
+                //            k++;
+                //        }
+                //        for (int i = 0; i < s.Length; i++)//Вторая строка
+                //        {
+                //            index12[k] = index1[i, 1];
+                //            k++;
+                //        }
+                //        //Заполняем
+                //        k = 0;
+                //        for(int i = 0; i < s.Length; i++)
+                //        {
+                //            for (int l = 0; l < 2; l++)
+                //            {
+                //                index2[i, l] = index12[k];
+                //                k++;
+                //            }
+                //        }
+                //        //Ищем буквы по индексам
+                //        int g = 0;
+                //        for (int i = 0; i < s.Length; i++)
+                //        {
+                //            text1[i] = mass[index2[g,1],index2[g,0]];
+                //            g++;
+                //        }
+                //        Out = new string(text1);//Для вывода строки
+                //        code.Append(Out); //Для вывода строки
+                //        break;
+                //    case 2://Русские маленькие
+                //        mass = new char[6,6];
+                //        t = skey + alru1;
+                //        for (int i = 0; i < skey.Length; i++)
+                //        {
+                //            int indexOfChar = -1;
+                //            indexOfChar = t.LastIndexOf(skey[i]);
+                //            if (indexOfChar >= 0)
+                //            {
+                //                t = t.Remove(indexOfChar, 1);
+                //            }
+                //        }
+                //        table = new char[t.Length];
+                //        for (int i = 0; i < t.Length; i++)//Текст из string в char[]
+                //        {
+                //            table[i] = t[i];
+                //        }
+
+                //        k = 0;
+                //        for (int i = 0; i < 6; i++)//Заполнение таблицы шифрования
+                //        {
+                //            for (int n = 0; n < 6; n++)
+                //            {
+                //                if (k > 32)
+                //                {
+                //                    if (k == 33)
+                //                    {
+                //                        mass[i, n] = '.';
+                //                        k++;
+                //                    }
+                //                    else if (k == 34)
+                //                    {
+                //                        mass[i, n] = ',';
+                //                        k++;
+                //                    }
+                //                    else if (k == 35)
+                //                    {
+                //                        mass[i, n] = '?';
+                //                        k++;
+                //                    }
+                //                }
+                //                else
+                //                {
+                //                    mass[i, n] = table[k];
+                //                    k++;
+                //                }
+                //            }
+                //        }
+
+                //        ind1 = 0;
+                //        //Ищем индексы введённого текста
+                //        for (k = 0; k < s.Length; k++)
+                //        {
+                //            for (int i = 0; i < 6; i++)
+                //            {
+                //                for (int n = 0; n < 6; n++)
+                //                {
+                //                    if (s[k] == mass[i, n])
+                //                    {
+                //                        index1[ind1, 1] = i;
+                //                        index1[ind1, 0] = n;
+                //                        ind1++;
+                //                    }
+                //                }
+                //            }
+                //        }
+
+                //        k = 0;
+                //        index12 = new int[s.Length * 2];
+                //        //Преобразуем координаты
+                //        for (int i = 0; i < s.Length; i++)//Первая строка
+                //        {
+                //            index12[k] = index1[i, 0];
+                //            k++;
+                //        }
+                //        for (int i = 0; i < s.Length; i++)//Вторая строка
+                //        {
+                //            index12[k] = index1[i, 1];
+                //            k++;
+                //        }
+                //        //Заполняем
+                //        k = 0;
+                //        for (int i = 0; i < s.Length; i++)
+                //        {
+                //            for (int l = 0; l < 2; l++)
+                //            {
+                //                index2[i, l] = index12[k];
+                //                k++;
+                //            }
+                //        }
+                //        //Ищем буквы по индексам
+                //        g = 0;
+                //        for (int i = 0; i < s.Length; i++)
+                //        {
+                //            text1[i] = mass[index2[g, 1], index2[g, 0]];
+                //            g++;
+                //        }
+                //        Out = new string(text1);//Для вывода строки
+                //        break;
+                //    case 3:
+                //        mass = new char[5,5];
+                //        t = skey + alEn1;
+                //        for (int i = 0; i < skey.Length; i++)
+                //        {
+                //            int indexOfChar = -1;
+                //            indexOfChar = t.LastIndexOf(skey[i]);
+                //            if (indexOfChar >= 0)
+                //            {
+                //                t = t.Remove(indexOfChar, 1);
+                //            }
+                //        }
+
+                //        int index = -1;
+                //        index = t.LastIndexOf('J');
+                //        if (index >= 0)
+                //        {
+                //            t = t.Remove(index, 1);
+                //        }
+
+                //        table = new char[t.Length];
+
+                //        for (int i = 0; i < t.Length; i++)//Текст из string в char[]
+                //        {
+                //            table[i] = t[i];
+                //        }
+
+                //        k = 0;
+                //        for (int i = 0; i < 5; i++)//Заполнение таблицы шифрования
+                //        {
+                //            for (int n = 0; n < 5; n++)
+                //            {
+                //                mass[i, n] = table[k];
+                //                k++;
+                //            }
+                //        }
+
+                //        int count = 0; //Считаем число "НЕБУКВ"
+                //        for (int i = 0; i < s.Length; i++)
+                //        {
+                //            int indexOfCh = -1;
+                //            for (int J = 0; J < al.Length; J++)
+                //            {
+                //                indexOfCh = al.IndexOf(s[i]);
+                //            }
+                //            if (indexOfCh >= 0)
+                //            {
+                //                count++;
+                //            }
+                //        }
+                //        ////Находим индексы "НЕБУКВ"
+                //        int[] index3 = new int[count+1];
+                //        //int I = 0;
+                //        //for (int i = 0; i < s.Length; i++)
+                //        //{
+                //        //    int indexOfCh = -1;
+                //        //    for (int J = 0; J < al.Length; J++)
+                //        //    {
+                //        //        indexOfCh = al.IndexOf(s[i]);
+                //        //    }
+                //        //    if (indexOfCh < 0)
+                //        //    {
+                //        //        index3[I] = i;
+                //        //        I++;
+                //        //    }
+                //        //}
+                //        //s1 = s;
+                //        //for(int i = 0; i < index3.Length; i++)
+                //        //{
+                //        //    s = s.Remove(index3[i], 1);
+                //        //}
+
+
+                //        ind1 = 0;
+                //        int f = 0;
+                //        //Ищем индексы введённого текста
+                //        for (k = 0; k < s.Length; k++)
+                //        {
+                //            int indexOfCh = -1;//Проверка на букву
+                //            for (int J = 0; J < al.Length; J++)
+                //            {
+                //                indexOfCh = al.IndexOf(s[k]);
+                //            }
+                //            if (indexOfCh < 0)
+                //            {
+                //                index3[f] = k;
+                //                f++;
+
+                //                continue;
+                //            }
+                //            else
+                //            {
+                //                for (int i = 0; i < 5; i++)
+                //                {
+                //                    for (int n = 0; n < 5; n++)
+                //                    {
+
+                //                        if (s[k] == mass[i, n])
+                //                        {/////////////////////поменял индексы
+                //                            index1[ind1, 1] = i;
+                //                            index1[ind1, 0] = n;
+                //                            ind1++;
+                //                        }
+                //                        else if (s[k] == 'J')
+                //                        {
+                //                            if (mass[i, n] == 'I')
+                //                            {
+                //                                index1[ind1, 1] = i;
+                //                                index1[ind1, 0] = n;
+                //                                ind1++;
+                //                            }
+                //                        }
+                //                    }
+                //                }
+                //            }
+
+                //        }
+
+                //        k = 0;
+                //        index12 = new int[s.Length * 2];
+                //        //Преобразуем координаты
+                //        for (int i = 0; i < s.Length; i++)//Первая строка
+                //        {
+                //            index12[k] = index1[i, 0];
+                //            k++;
+                //        }
+                //        for (int i = 0; i < s.Length; i++)//Вторая строка
+                //        {
+                //            index12[k] = index1[i, 1];
+                //            k++;
+                //        }
+                //        //Заполняем
+                //        k = 0;
+                //        for (int i = 0; i < s.Length; i++)
+                //        {
+                //            for (int l = 0; l < 2; l++)
+                //            {
+                //                index2[i, l] = index12[k];
+                //                k++;
+                //            }
+                //        }
+                //        //Ищем буквы по индексам
+                //        g = 0;
+                //        for (int i = 0; i < s.Length; i++)
+                //        {
+                //            text1[i] = mass[index2[g, 1], index2[g, 0]];
+                //            g++;
+                //        }
+                //        Out = new string(text1);//Для вывода строки
+                //        break;
+                //    case 4:
+                //        mass = new char[5,5];
+                //        t = skey + alen1;
+                //        for (int i = 0; i < skey.Length; i++)
+                //        {
+                //            int indexOfChar = -1;
+                //            indexOfChar = t.LastIndexOf(skey[i]);
+                //            if (indexOfChar >= 0)
+                //            {
+                //                t = t.Remove(indexOfChar, 1);
+                //            }
+                //        }
+
+                //        index = -1;
+                //        index = t.LastIndexOf('j');
+                //        if (index >= 0)
+                //        {
+                //            t = t.Remove(index, 1);
+                //        }
+
+                //        table = new char[t.Length];
+
+                //        for (int i = 0; i < t.Length; i++)//Текст из string в char[]
+                //        {
+                //            table[i] = t[i];
+                //        }
+                //        k = 0;
+                //        for (int i = 0; i < 5; i++)//Заполнение таблицы шифрования
+                //        {
+                //            for (int n = 0; n < 5; n++)
+                //            {
+                //                mass[i, n] = table[k];
+                //                k++;
+                //            }
+                //        }
+
+                //        ind1 = 0;
+                //        //Ищем индексы введённого текста
+                //        for (k = 0; k < s.Length; k++)
+                //        {
+                //            for (int i = 0; i < 5; i++)
+                //            {
+                //                for (int n = 0; n < 5; n++)
+                //                {
+                //                    if (s[k] == mass[i, n])
+                //                    {/////////////////////поменял индексы
+                //                        index1[ind1, 1] = i;
+                //                        index1[ind1, 0] = n;
+                //                        ind1++;
+                //                    }
+                //                    else if (s[k] == 'j')
+                //                    {
+                //                        if (mass[i, n] == 'i')
+                //                        {
+                //                            index1[ind1, 1] = i;
+                //                            index1[ind1, 0] = n;
+                //                            ind1++;
+                //                        }
+                //                    }
+                //                }
+                //            }
+                //        }
+
+                //        k = 0;
+                //        index12 = new int[s.Length * 2];
+                //        //Преобразуем координаты
+                //        for (int i = 0; i < s.Length; i++)//Первая строка
+                //        {
+                //            index12[k] = index1[i, 0];
+                //            k++;
+                //        }
+                //        for (int i = 0; i < s.Length; i++)//Вторая строка
+                //        {
+                //            index12[k] = index1[i, 1];
+                //            k++;
+                //        }
+                //        //Заполняем
+                //        k = 0;
+                //        for (int i = 0; i < s.Length; i++)
+                //        {
+                //            for (int l = 0; l < 2; l++)
+                //            {
+                //                index2[i, l] = index12[k];
+                //                k++;
+                //            }
+                //        }
+                //        //Ищем буквы по индексам
+                //        g = 0;
+                //        for (int i = 0; i < s.Length; i++)
+                //        {
+                //            text1[i] = mass[index2[g, 1], index2[g, 0]];
+                //            g++;
+                //        }
+                //        Out = new string(text1);//Для вывода строки
+                //        break;
+                //}
+
             }
-            return code.ToString();
+            return Out;//code.ToString();
         }
 
-        public string Polybius2(string inp) //Шифрование Сцитала
+        public string Polybius2(string inp) //Расшифровка Полибий
         {
+            string alRu1 = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ";
+            string alru1 = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя";
+            string alEn1 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            string alen1 = "abcdefghijklmnopqrstuvwxyz";
+            StringBuilder code = new StringBuilder();
+            string s = textBox1.Text; // s - связана с вводимым текстом
+            string skey = textBox4.Text; //skey - ключ шифрования
+            char[] key = new char[skey.Length];//key - для хранения ключа и его проверок
+            var text = new char[s.Length]; //Для хранения введённых символов
+            //string table; //Для хранения таблицы шифрования
+            int alphabet1 = 0; //Для сравнения алфавитов ключа и строки
+            int alphabet2 = 0; //Для сравнения алфавитов ключа и строки
+            string Out = ""; //Строка для расшифрованной строки
+            var text1 = new char[s.Length]; //Для хранения введённых символов
 
-            return "";
+            if (textBox1.Text == "") //Проверка на пустое поле
+            {
+                MessageBox.Show("Введите текст!", "Пустое поле");
+                return "";
+            }
+            //if (textBox4.Text == "") //Проверка на пустой ключ
+            //{
+            //    MessageBox.Show("Укажите ключ шифрования!", "Пустое поле");
+            //    return "";
+            //}
+            else
+            {
+                for (int i = 0; i < skey.Length; i++)//Ключ из string в char[]
+                {
+                    key[i] = skey[i];
+                }
+
+                bool bukva = true;
+
+                for (int i = 0; i < key.Length; i++)//Проверка ключа
+                {
+
+
+                    int indexOfChar = -1;
+                    indexOfChar = al.IndexOf(key[i]);
+                    if (indexOfChar < 0)//Если любой из символов ключа не буква
+                    {
+                        MessageBox.Show("Ключ должен быть буквенным!", "Неверный ключ");
+                        bukva = false;
+                        return "";
+                    }
+                }
+                if (bukva == false)
+                {
+                    MessageBox.Show("Тут не только буквы!", "Ошибка ключа");
+                    return "";
+                }//Проверка на одинаковый алфавит и регистр
+                else
+                {
+                    int indexOfChar1 = -1;
+                    int indexOfChar2 = -1;
+                    int indexOfChar3 = -1;
+                    int indexOfChar4 = -1;
+                    indexOfChar1 = alRu1.IndexOf(key[0]);
+                    indexOfChar2 = alru1.IndexOf(key[0]);
+                    indexOfChar3 = alEn1.IndexOf(key[0]);
+                    indexOfChar4 = alen1.IndexOf(key[0]);
+                    int R1 = 0;
+                    int r1 = 0;
+                    int E1 = 0;
+                    int e1 = 0;
+                    bool Ru1 = false;
+                    bool ru1 = false;
+                    bool En1 = false;
+                    bool en1 = false;
+
+                    //Определение алфавита для первого символа и сравнение других
+                    if (indexOfChar1 >= 0)
+                    {
+                        for (int i = 0; i < key.Length; i++)
+                        {
+                            indexOfChar1 = -1;
+                            indexOfChar1 = alRu1.IndexOf(key[i]);
+                            if (indexOfChar1 >= 0)
+                            {
+                                R1++;
+                            }
+                        }
+                        if (R1 == key.Length)
+                        {
+                            Ru1 = true;
+                            alphabet1 = 1;
+                        }
+                        else
+                        {
+                            Ru1 = false;
+                            MessageBox.Show("Введите буквы одинакового алфавита и регистра!", "Ошибка ключа");
+                            return "";
+                        }
+                    }
+                    else if (indexOfChar2 >= 0)
+                    {
+                        for (int i = 0; i < key.Length; i++)
+                        {
+                            indexOfChar2 = -1;
+                            indexOfChar2 = alru1.IndexOf(key[i]);
+                            if (indexOfChar2 >= 0)
+                            {
+                                r1++;
+                            }
+                        }
+                        if (r1 == key.Length)
+                        {
+                            ru1 = true;
+                            alphabet1 = 2;
+                        }
+                        else
+                        {
+                            ru1 = false;
+                            MessageBox.Show("Введите буквы одинакового алфавита и регистра!", "Ошибка ключа");
+                            return "";
+                        }
+                    }
+                    else if (indexOfChar3 >= 0)
+                    {
+                        for (int i = 0; i < key.Length; i++)
+                        {
+                            indexOfChar3 = -1;
+                            indexOfChar3 = alEn1.IndexOf(key[i]);
+                            if (indexOfChar3 >= 0)
+                            {
+                                E1++;
+                            }
+                        }
+                        if (E1 == key.Length)
+                        {
+                            En1 = true;
+                            alphabet1 = 3;
+                        }
+                        else
+                        {
+                            Ru1 = false;
+                            MessageBox.Show("Введите буквы одинакового алфавита и регистра!", "Ошибка ключа");
+                            return "";
+                        }
+                    }
+                    else if (indexOfChar4 >= 0)
+                    {
+                        for (int i = 0; i < key.Length; i++)
+                        {
+                            indexOfChar4 = -1;
+                            indexOfChar4 = alen1.IndexOf(key[i]);
+                            if (indexOfChar4 >= 0)
+                            {
+                                e1++;
+                            }
+                        }
+                        if (e1 == key.Length)
+                        {
+                            en1 = true;
+                            alphabet1 = 4;
+                        }
+                        else
+                        {
+                            en1 = false;
+                            MessageBox.Show("Введите буквы одинакового алфавита и регистра!", "Ошибка ключа");
+                            return "";
+                        }
+                    }
+                }
+
+                for (int i = 0; i < s.Length; i++)//Текст из string в char[]
+                {
+                    text[i] = s[i];
+                }
+                int check = 0;
+                for (int i = 0; i < s.Length; i++)//Число подходящих символов
+                {
+                    int indexOfChar = -1;
+                    indexOfChar = al.IndexOf(s[i]);
+                    if (indexOfChar >= 0)
+                    {
+                        check++;
+                    }
+                }
+                int j = 0;
+                var text_check = new char[check];//Для хранения строки для проверки
+                for (int i = 0; i < s.Length; i++)//Текст из string в char[] для проверки алфавита и регистра
+                {
+                    int indexOfChar = -1;
+                    indexOfChar = al.IndexOf(s[i]);
+                    if (indexOfChar >= 0)
+                    {
+                        text_check[j] = s[i];
+                        j++;
+                    }
+                }
+
+                //Проверка text_check на регистр и алфавит
+                int indexOfChar5 = -1;
+                int indexOfChar6 = -1;
+                int indexOfChar7 = -1;
+                int indexOfChar8 = -1;
+                indexOfChar5 = alRu1.IndexOf(key[0]);
+                indexOfChar6 = alru1.IndexOf(key[0]);
+                indexOfChar7 = alEn1.IndexOf(key[0]);
+                indexOfChar8 = alen1.IndexOf(key[0]);
+                int R = 0;
+                int r = 0;
+                int E = 0;
+                int e = 0;
+                bool Ru2 = false;
+                bool ru2 = false;
+                bool En2 = false;
+                bool en2 = false;
+
+                //Определение алфавита для первого символа и сравнение других
+                if (indexOfChar5 >= 0)
+                {
+                    for (int i = 0; i < text_check.Length; i++)
+                    {
+                        indexOfChar5 = -1;
+                        indexOfChar5 = alRu1.IndexOf(text_check[i]);
+                        if (indexOfChar5 >= 0)
+                        {
+                            R++;
+                        }
+                    }
+                    if (R == text_check.Length)
+                    {
+                        Ru2 = true;
+                        alphabet2 = 1;
+                    }
+                    else
+                    {
+                        Ru2 = false;
+                        MessageBox.Show("В строке должны быть буквы одинакового регистра и алфавита!", "Некорректная строка");
+                        return "";
+                    }
+                }
+                else if (indexOfChar6 >= 0)
+                {
+                    for (int i = 0; i < text_check.Length; i++)
+                    {
+                        indexOfChar6 = -1;
+                        indexOfChar6 = alru1.IndexOf(text_check[i]);
+                        if (indexOfChar6 >= 0)
+                        {
+                            r++;
+                        }
+                    }
+                    if (r == text_check.Length)
+                    {
+                        ru2 = true;
+                        alphabet2 = 2;
+                    }
+                    else
+                    {
+                        ru2 = false;
+                        MessageBox.Show("В строке должны быть буквы одинакового регистра и алфавита!", "Некорректная строка");
+                        return "";
+                    }
+                }
+                else if (indexOfChar7 >= 0)
+                {
+                    for (int i = 0; i < text_check.Length; i++)
+                    {
+                        indexOfChar7 = -1;
+                        indexOfChar7 = alEn1.IndexOf(text_check[i]);
+                        if (indexOfChar7 >= 0)
+                        {
+                            E++;
+                        }
+                    }
+                    if (E == text_check.Length)
+                    {
+                        En2 = true;
+                        alphabet2 = 3;
+                    }
+                    else
+                    {
+                        Ru2 = false;
+                        MessageBox.Show("В строке должны быть буквы одинакового регистра и алфавита!", "Некорректная строка");
+                        return "";
+                    }
+                }
+                else if (indexOfChar8 >= 0)
+                {
+                    for (int i = 0; i < text_check.Length; i++)
+                    {
+                        indexOfChar8 = -1;
+                        indexOfChar8 = alen1.IndexOf(text_check[i]);
+                        if (indexOfChar8 >= 0)
+                        {
+                            e++;
+                        }
+                    }
+                    if (e == text_check.Length)
+                    {
+                        en2 = true;
+                        alphabet2 = 4;
+                    }
+                    else
+                    {
+                        en2 = false;
+                        MessageBox.Show("В строке должны быть буквы одинакового регистра и алфавита!", "Некорректная строка");
+                        return "";
+                    }
+                }
+                for (int S = 0; S < s.Length; S++)
+                {//ПРОВЕРКА НА БУКВУ
+                    int index = -1;
+                    index = al.IndexOf(s[S]);
+                    if (index < 0)
+                    {
+                        text1[S] = s[S];
+                        Out = new string(text1);
+
+                    }
+                    else
+                    {
+                        //Создаём массив для квадрата Полибия
+                        char[,] mass;
+                        switch (alphabet1)
+                        {
+                            case 1://Русские большие
+                                mass = new char[6, 6];
+                                string t = skey + alRu1;
+                                for (int i = 0; i < skey.Length; i++)
+                                {
+                                    int indexOfChar = -1;
+                                    indexOfChar = t.LastIndexOf(skey[i]);
+                                    if (indexOfChar >= 0)
+                                    {
+                                        t = t.Remove(indexOfChar, 1);
+                                    }
+                                }
+                                var table = new char[t.Length];
+                                for (int i = 0; i < t.Length; i++)//Текст из string в char[]
+                                {
+                                    table[i] = t[i];
+                                }
+
+                                int k = 0;
+                                for (int i = 0; i < 6; i++)
+                                {
+                                    for (int n = 0; n < 6; n++)
+                                    {
+                                        if (k > 32)
+                                        {
+                                            k++;
+                                            continue;
+                                        }
+                                        else
+                                        {
+                                            mass[i, n] = table[k];
+                                            k++;
+                                        }
+                                    }
+                                }
+
+                                int column = 0;
+                                int row = 0;
+
+                                for (int m = 0; m < 6; m++)
+                                {
+                                    for (int n = 0; n < 6; n++)
+                                    {
+                                        if (S == 6)
+                                        {
+                                            if (s[S - 1] == mass[m, n])
+                                            {
+                                                row = m;
+                                                column = n;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (s[S] == mass[m, n])
+                                            {
+                                                row = m;
+                                                column = n;
+                                            }
+                                        }
+
+                                    }
+                                }
+
+                                if (row == 0)
+                                {
+                                    if (column > 2)
+                                    {
+                                        row = 4;
+                                        text1[S] = mass[row, column];
+                                    }
+                                    else
+                                    {
+                                        row = 5;
+                                        text1[S] = mass[row, column];
+                                    }
+                                }
+                                else
+                                {
+                                    text1[S] = mass[row - 1, column];
+                                }
+
+
+                                Out = new string(text1);//Для вывода строки
+                                                        //code.Append(text1); //Для вывода строки
+                                break;
+                            case 2://Русские маленькие
+                                mass = new char[6, 6];
+                                t = skey + alru1;
+                                for (int i = 0; i < skey.Length; i++)
+                                {
+                                    int indexOfChar = -1;
+                                    indexOfChar = t.LastIndexOf(skey[i]);
+                                    if (indexOfChar >= 0)
+                                    {
+                                        t = t.Remove(indexOfChar, 1);
+                                    }
+                                }
+                                table = new char[t.Length];
+                                for (int i = 0; i < t.Length; i++)//Текст из string в char[]
+                                {
+                                    table[i] = t[i];
+                                }
+
+                                k = 0;
+                                for (int i = 0; i < 6; i++)
+                                {
+                                    for (int n = 0; n < 6; n++)
+                                    {
+                                        if (k > 32)
+                                        {
+                                            k++;
+                                            continue;
+                                        }
+                                        else
+                                        {
+                                            mass[i, n] = table[k];
+                                            k++;
+                                        }
+                                    }
+                                }
+
+                                column = 0;
+                                row = 0;
+
+                                for (int m = 0; m < 6; m++)
+                                {
+                                    for (int n = 0; n < 6; n++)
+                                    {
+                                        if (S == 6)
+                                        {
+                                            if (s[S - 1] == mass[m, n])
+                                            {
+                                                row = m;
+                                                column = n;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (s[S] == mass[m, n])
+                                            {
+                                                row = m;
+                                                column = n;
+                                            }
+                                        }
+
+                                    }
+                                }
+
+                                if (row == 0)
+                                {
+                                    if (column > 2)
+                                    {
+                                        row = 4;
+                                        text1[S] = mass[row, column];
+                                    }
+                                    else
+                                    {
+                                        row = 5;
+                                        text1[S] = mass[row, column];
+                                    }
+                                }
+                                else
+                                {
+                                    text1[S] = mass[row - 1, column];
+                                }
+
+
+                                Out = new string(text1);//Для вывода строки
+                                break;
+                            case 3:
+                                mass = new char[5, 5];
+                                t = skey + alEn1;
+                                for (int i = 0; i < skey.Length; i++)
+                                {
+                                    int indexOfChar = -1;
+                                    indexOfChar = t.LastIndexOf(skey[i]);
+                                    if (indexOfChar >= 0)
+                                    {
+                                        t = t.Remove(indexOfChar, 1);
+                                    }
+                                }
+
+                                index = -1;
+                                index = t.LastIndexOf('J');
+                                if (index >= 0)
+                                {
+                                    t = t.Remove(index, 1);
+                                }
+
+                                table = new char[t.Length];
+
+                                for (int i = 0; i < t.Length; i++)//Текст из string в char[]
+                                {
+                                    table[i] = t[i];
+                                }
+
+                                k = 0;
+                                for (int i = 0; i < 5; i++)
+                                {
+                                    for (int n = 0; n < 5; n++)
+                                    {
+                                        mass[i, n] = table[k];
+                                        k++;
+                                    }
+                                }
+
+                                column = 0;
+                                row = 0;
+
+                                for (int m = 0; m < 5; m++)
+                                {
+                                    for (int n = 0; n < 5; n++)
+                                    {
+                                        if (s[S] == 'J')
+                                        {
+                                            if (mass[m, n] == 'I')
+                                            {
+                                                row = m;
+                                                column = n;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (s[S] == mass[m, n])
+                                            {
+                                                row = m;
+                                                column = n;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                if (row == 0)
+                                {
+                                    row = 4;
+                                    text1[S] = mass[row, column];
+                                }
+                                else
+                                {
+                                    text1[S] = mass[row - 1, column];
+                                }
+
+
+                                Out = new string(text1);//Для вывода строки
+                                break;
+                            case 4:
+                                mass = new char[5, 5];
+                                t = skey + alen1;
+                                for (int i = 0; i < skey.Length; i++)
+                                {
+                                    int indexOfChar = -1;
+                                    indexOfChar = t.LastIndexOf(skey[i]);
+                                    if (indexOfChar >= 0)
+                                    {
+                                        t = t.Remove(indexOfChar, 1);
+                                    }
+                                }
+
+                                index = -1;
+                                index = t.LastIndexOf('j');
+                                if (index >= 0)
+                                {
+                                    t = t.Remove(index, 1);
+                                }
+
+                                table = new char[t.Length];
+
+                                for (int i = 0; i < t.Length; i++)//Текст из string в char[]
+                                {
+                                    table[i] = t[i];
+                                }
+                                k = 0;
+                                for (int i = 0; i < 5; i++)
+                                {
+                                    for (int n = 0; n < 5; n++)
+                                    {
+                                        mass[i, n] = table[k];
+                                        k++;
+                                    }
+                                }
+
+                                column = 0;
+                                row = 0;
+
+                                for (int m = 0; m < 5; m++)
+                                {
+                                    for (int n = 0; n < 5; n++)
+                                    {
+                                        if (s[S] == 'j')
+                                        {
+                                            if (mass[m, n] == 'i')
+                                            {
+                                                row = m;
+                                                column = n;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (s[S] == mass[m, n])
+                                            {
+                                                row = m;
+                                                column = n;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                if (row == 0)
+                                {
+                                    row = 4;
+                                    text1[S] = mass[row, column];
+                                }
+                                else
+                                {
+                                    text1[S] = mass[row - 1, column];
+                                }
+
+                                Out = new string(text1);//Для вывода строки
+                                break;
+                        }
+                    }
+
+
+                }
+            }
+            return Out;
         }
 
         public string Atbash1(string inp) //Зашифровать Атбаш
@@ -1231,7 +2319,7 @@ namespace Ciphers
                     }
                     else
                     {
-                        for (int i = 0; i < s.Length; i++) 
+                        for (int i = 0; i < s.Length; i++)
                         {
                             bool f1 = false;
                             for (int k = 0; k < al.Length; k++) //Проверка на букву
