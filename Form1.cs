@@ -26,7 +26,6 @@ namespace Ciphers
         string alRu = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя";
         string alEn = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         string al = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюяABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-        string Numbers = "1234567890!@#$%^&*()_+!~`№;%:?*-=[]{};:',./<>\0|";
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -122,31 +121,24 @@ namespace Ciphers
                         }
                         else
                         {
-                            int count = 0; //Количество добавленных пробелов
                             int col = 0; //Число столбцов
-                            int del = 0; //Остаток от деления
-                            string open_text = s; //Строка для хранения введённого + пробелы
+                            string open_text = s; //Строка для хранения введённого
                             if (s.Length % diameter != 0) //Определяем столбцы
                             {
                                 col = (s.Length / diameter) + 1; //Столбцов
-                                del = s.Length % diameter;//Остаток
-                                for (int i = 0; i < (diameter - del); i++) //Если нужны пробелы
-                                {
-                                    //open_text = open_text + " ";
-                                    //count++;//Их число
-                                }
                             }
-                            else//Если не нужны
+                            else
                             {
                                 col = s.Length / diameter;
                             }
                             //Процес шифрования
-                            int numbers = 0;
+                            int numbers = 0; //Подсчёт пройденных букв
                             for (int i = 0; i < col; i++)//Проход по столбцам
                             {
                                 for (int j = 0; j < diameter; j++)//Проход по символам в столбце
                                 {
-                                    if (open_text.Length < (col * diameter))
+                                    //if (open_text.Length < (col * diameter))
+                                    if (open_text.Length > (col * j + i))
                                     {
                                         if (numbers >= open_text.Length)
                                         {
@@ -161,8 +153,7 @@ namespace Ciphers
                                     }
                                     else
                                     {
-                                        code.Append(open_text[((j * col) + i) % open_text.Length]);
-                                        numbers++;
+                                        continue;
                                     }
 
 
@@ -233,11 +224,9 @@ namespace Ciphers
                         {
 
                             int col = 0; //Число столбцов
-                            int del = 0; //Остаток от деления
                             if (s.Length % diameter != 0) //Определяем столбцы
                             {
                                 col = (s.Length / diameter) + 1; //Столбцов
-                                del = s.Length % diameter;//Остаток
                             }
                             else//Если без остатка
                             {
@@ -257,7 +246,7 @@ namespace Ciphers
                             {
                                 for (int j = 0; j < diameter; j++)
                                 {
-                                    if (text.Length < (col * diameter))
+                                    if (text.Length > (col * j + i))
                                     {
                                         if (numbers >= text.Length)
                                         {
@@ -273,7 +262,8 @@ namespace Ciphers
                                     }
                                     else
                                     {
-                                        mass[i, j] = text[t];//Записываем из строки char[] в двумерный массив
+                                        //mass[i, j] = text[t];//Записываем из строки char[] в двумерный массив
+                                        continue;
                                         t++;
                                         numbers++;
                                     }
@@ -323,12 +313,10 @@ namespace Ciphers
             string skey = textBox4.Text; //skey - ключ шифрования
             char[] key = new char[skey.Length];//key - для хранения ключа и его проверок
             var text = new char[s.Length]; //Для хранения введённых символов
-            //string table; //Для хранения таблицы шифрования
             int alphabet1 = 0; //Для сравнения алфавитов ключа и строки
             int alphabet2 = 0; //Для сравнения алфавитов ключа и строки
             string Out = ""; //Строка для расшифрованной строки
             var text1 = new char[s.Length]; //Для хранения введённых символов
-            string s1 = "";
 
             if (textBox1.Text == "") //Проверка на пустое поле
             {
@@ -654,7 +642,7 @@ namespace Ciphers
                                     table[i] = t[i];
                                 }
 
-                                int k = 0;
+                                int k = 0;//Создаём таблицу шифрования
                                 for (int i = 0; i < 6; i++)
                                 {
                                     for (int n = 0; n < 6; n++)
@@ -966,11 +954,11 @@ namespace Ciphers
                 MessageBox.Show("Введите текст!", "Пустое поле");
                 return "";
             }
-            //if (textBox4.Text == "") //Проверка на пустой ключ
-            //{
-            //    MessageBox.Show("Укажите ключ шифрования!", "Пустое поле");
-            //    return "";
-            //}
+            if (textBox4.Text == "") //Проверка на пустой ключ
+            {
+                MessageBox.Show("Укажите ключ шифрования!", "Пустое поле");
+                return "";
+            }
             else
             {
                 for (int i = 0; i < skey.Length; i++)//Ключ из string в char[]
@@ -1309,22 +1297,11 @@ namespace Ciphers
                                 {
                                     for (int n = 0; n < 6; n++)
                                     {
-                                        if (S == 6)
-                                        {
-                                            if (s[S - 1] == mass[m, n])
-                                            {
-                                                row = m;
-                                                column = n;
-                                            }
-                                        }
-                                        else
-                                        {
                                             if (s[S] == mass[m, n])
                                             {
                                                 row = m;
                                                 column = n;
                                             }
-                                        }
 
                                     }
                                 }
@@ -1394,22 +1371,11 @@ namespace Ciphers
                                 {
                                     for (int n = 0; n < 6; n++)
                                     {
-                                        if (S == 6)
-                                        {
-                                            if (s[S - 1] == mass[m, n])
-                                            {
-                                                row = m;
-                                                column = n;
-                                            }
-                                        }
-                                        else
-                                        {
                                             if (s[S] == mass[m, n])
                                             {
                                                 row = m;
                                                 column = n;
                                             }
-                                        }
 
                                     }
                                 }
