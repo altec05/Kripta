@@ -98,7 +98,8 @@
             "Шифр Цезаря",
             "Шифр Атбаш",
             "Шифр Сцитала",
-            "Квадрат Полибия"});
+            "Квадрат Полибия",
+            "Шифр Кардано"});
             this.comboBox1.Location = new System.Drawing.Point(337, 48);
             this.comboBox1.Margin = new System.Windows.Forms.Padding(4);
             this.comboBox1.Name = "comboBox1";
